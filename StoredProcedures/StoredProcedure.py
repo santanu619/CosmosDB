@@ -21,7 +21,7 @@ class StoredProcedure:
             self.database = self.client.get_database_client(self.database_name)
             self.container = self.database.get_container_client(self.container_name) 
 
-    def create_container(self):
+    def createContainer(self):
         '''
         description: Function to register the stored procedure
         Parameters: None
@@ -37,10 +37,10 @@ class StoredProcedure:
             }     
             self.create_sproc = self.container.scripts.create_stored_procedure(body=sprocedure)
         except Exception as e:    
-            print("Already exists")
+            logging.exception("Cannot create the database",e)
 
 
-    def execute_container(self):  
+    def containerFunction(self):  
         '''
         description: Function to execute the container in cosmosdb
         Parameters: None
@@ -63,3 +63,8 @@ class StoredProcedure:
             self.container.scripts.execute_stored_procedure(sproc='AddItem',params=[[new_item]], partition_key=description) 
         except Exception as e:
             logging.error(e)    
+
+if __name__=="__main__":
+    obj = StoredProcedure()
+    obj.createContainer()
+    obj.containerFunction()
